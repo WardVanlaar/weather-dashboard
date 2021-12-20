@@ -50,7 +50,43 @@ body {
 .form-group button {
     width: 100%;
 }
-   
+
+
+
+/* .grid,
+.subgrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.subgrid {
+  width: calc(100% + 2rem);
+  margin: 0;
+}
+
+.grid-item,
+.subgrid-item {
+  padding: 1rem;
+}
+
+.subgrid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    margin-bottom: 1rem;
+  }
+
+.subgrid-item {
+    padding-bottom: 0.25rem;
+}
+
+.grid {
+    grid-template-areas:
+      'header header'
+      'main main'
+      'footer footer';
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  } */
+
+
   /* button {
     cursor: pointer;
   }

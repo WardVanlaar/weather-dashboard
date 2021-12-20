@@ -22,30 +22,37 @@
 
     <body>
         <main class="wrapper col-12 col-lg-9 d-flex flex-column">
-            <section class="container">
-                <h1 class="heading">Weather Dashboard</h1>
-            </section>
-            <section class="row justify-content-around">
-                <form class="col-3">
-                    <div class="form-group">
-                        <label>Search for a City:</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ottawa">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        <span class="msg"></span>
-                    </div>
-                </form>
-                <div class="col-9 d-flex align-items-center">
-                    <ul class="cities">City</ul>
-                </div>
-                    <div class="col-9 aling-self-end">
-                        <div class="5-day-forecast">1</div>
-                        <div class="5-day-forecast">2</div>
-                        <div class="5-day-forecast">3</div>
-                        <div class="5-day-forecast">4</div>
-                        <div class="5-day-forecast">5</div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 coll-sm-12">
+                        <h1 class="heading">Weather Dashboard</h1>
                     </div>
                 </div>
-            </section>
+                <div class="row justify-content-around">
+                    <form class="col-3 col-sm-3">
+                        <div class="form-group">
+                            <label>Search for a City:</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ottawa">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <span class="msg"></span>
+                        </div>
+                    </form>
+                    <div class="col-9 col-sm-9">
+                        <div class="row">
+                            <ul class="cities col-9 col-sm-9">City</ul>
+                        </div>
+                        <div class="row">
+                            <div class="d-flex justify-content-between">
+                                <div class="5-day-forecast">1</div>
+                                <div class="5-day-forecast">2</div>
+                                <div class="5-day-forecast">3</div>
+                                <div class="5-day-forecast">4</div>
+                                <div class="5-day-forecast">5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
