@@ -30,16 +30,28 @@
                 </div>
                 <div class="row justify-content-around">
                     <form class="col-3 col-sm-3">
-                        <div class="form-group">
+                        <div class="form-group" id="input-form">
                             <label>Search for a City:</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ottawa">
+                            <input class="form-control" placeholder="Ottawa" id="input">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <span class="msg"></span>
+                            <span class="msg" id="message"></span>
                         </div>
                     </form>
                     <div class="col-9 col-sm-9">
                         <div class="row">
-                            <ul class="cities col-9 col-sm-9">City</ul>
+                            <ul class="cities col-9 col-sm-9" id="city">
+                                <li class="city">
+                                    <h2 class="city-name" data-name="...">
+                                      <span>...</span>
+                                      <sup>...</sup>
+                                    </h2>
+                                    <span class="city-temp">...<sup>°C</sup></span>
+                                    <figure>
+                                      <img class="city-icon" src="..." alt="...">
+                                      <figcaption>...</figcaption>
+                                    </figure>
+                                </li>
+                            </ul>
                         </div>
                         <div class="row">
                             <div class="d-flex justify-content-between">
