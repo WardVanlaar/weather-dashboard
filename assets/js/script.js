@@ -12,6 +12,7 @@ const list = document.querySelector("#city");
 // API key obtained from https://home.openweathermap.org
 const apiKey = "9173d4a8ceb0b3884e0d4a9dd7768ed0";
 
+// capture city
 form.addEventListener("submit", e => {
   e.preventDefault();
   let inputVal = input.value;
@@ -53,24 +54,29 @@ form.addEventListener("submit", e => {
 
   // fetch weather data
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
+  const url1 = `https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid=${apiKey}`
 
   fetch(url)
     .then(response => response.json())
     .then(data => {
-      const { main, name, sys, weather, wind, dt } = data;
+      const { main, coord, name, sys, weather, wind, dt } = data;
       const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
         weather[0]["icon"]
       }.svg`;
+
+      const unixTime = data.dt;
+      const date = new Date(unixTime*1000);
+      const date1= date.toLocaleDateString("en-US");
 
       const li = document.createElement("li");
       li.classList.add("city");
       const markup = `
         <h2 class="city-name" data-name="${name},${sys.country}">
-          <span>${name}, ${sys.country} (${dt})</span>
+          <span>${name}, ${sys.country} (${date1})</span>
         </h2>
         <div class="city-temp">Temp: ${Math.round(main.temp)}<sup>°</sup>C</div>
         <div class="city-wind">Wind: ${wind.speed} Km/h</div>
-        <div class="city-humidity">Humidity: ${main.humidity}</div>>
+        <div class="city-humidity">Humidity: ${main.humidity}%</div>>
         <figure>
           <img class="city-icon" src="${icon}" alt="${
         weather[0]["description"]}">
@@ -87,4 +93,41 @@ form.addEventListener("submit", e => {
   msg.textContent = "";
   form.reset();
   input.focus();
+
 });
+
+// save city
+
+const cities = JSON.parse(localStorage.getItem("input")) || [];
+
+function saveCity() {
+    var cityInput = document.getElementById("input").value;
+    const cityList = {
+        name: cityInput
+    };
+    cities.push(cityList);
+
+    localStorage.setItem("cities", JSON.stringify(cities));
+    console.log(cities);
+};
+
+function cityListHandler(event) {
+
+    saveCity();
+
+    const cityList = document.getElementById("cityList");
+    const cities = JSON.parse(localStorage.getItem("input")) || [];
+
+    const li = document.createElement("li");
+    li.classList.add("cityList");
+    li.innerHTML = cities;
+    list.appendChild(li);
+
+    // cityList.innerHTML = cities
+    //     .map(cities => {
+    //         return `<li>${cities.name}</li>`;
+    //     })
+    //     .join("");
+}
+
+submit_btn.addEventListener("click", cityListHandler);
