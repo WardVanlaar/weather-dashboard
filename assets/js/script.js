@@ -57,7 +57,7 @@ form.addEventListener("submit", e => {
   fetch(url)
     .then(response => response.json())
     .then(data => {
-      const { main, name, sys, weather } = data;
+      const { main, name, sys, weather, wind, dt } = data;
       const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
         weather[0]["icon"]
       }.svg`;
@@ -66,14 +66,14 @@ form.addEventListener("submit", e => {
       li.classList.add("city");
       const markup = `
         <h2 class="city-name" data-name="${name},${sys.country}">
-          <span>${name}</span>
-          <sup>${sys.country}</sup>
+          <span>${name}, ${sys.country} (${dt})</span>
         </h2>
-        <div class="city-temp">${Math.round(main.temp)}<sup>°C</sup></div>
+        <div class="city-temp">Temp: ${Math.round(main.temp)}<sup>°</sup>C</div>
+        <div class="city-wind">Wind: ${wind.speed} Km/h</div>
+        <div class="city-humidity">Humidity: ${main.humidity}</div>>
         <figure>
           <img class="city-icon" src="${icon}" alt="${
-        weather[0]["description"]
-      }">
+        weather[0]["description"]}">
           <figcaption>${weather[0]["description"]}</figcaption>
         </figure>
       `;
