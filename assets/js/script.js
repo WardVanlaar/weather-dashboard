@@ -24,9 +24,9 @@ form.addEventListener("submit", e => {
   if (listItemsArray.length > 0) {
     const filteredArray = listItemsArray.filter(el => {
       let content = "";
-      //athens,gr
+
       if (inputVal.includes(",")) {
-        //athens,grrrrrr->invalid country code, so we keep only the first part of inputVal
+
         if (inputVal.split(",")[1].length > 2) {
           inputVal = inputVal.split(",")[0];
           content = el
@@ -36,7 +36,6 @@ form.addEventListener("submit", e => {
           content = el.querySelector(".city-name").dataset.name.toLowerCase();
         }
       } else {
-        //athens
         content = el.querySelector(".city-name span").textContent.toLowerCase();
       }
       return content == inputVal.toLowerCase();
@@ -52,15 +51,7 @@ form.addEventListener("submit", e => {
     }
   }
 
-
-
-  
-
-
-
-
-
-  // fetch weather data
+  // fetch weather data, including nested fetch statement to get UV-index
   // adapted from https://stackoverflow.com/questions/40981040/using-a-fetch-inside-another-fetch-in-javascript
 
   const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
@@ -86,81 +77,55 @@ form.addEventListener("submit", e => {
         .then(responseI => responseI.json())
         .then(data2 => {
           const {current} = data2;
+          // localStorage.setItem("uvi", JSON.stringify(data2));
+          // console.log(data2);
 
           const li = document.createElement("li");
           li.classList.add("city");
           const markup = `
             <h2 class="city-name" data-name="${name},${sys.country}">
-            <span>${name}, ${sys.country} (${date1})</span>
+              <span>${name}, ${sys.country} (${date1}) <figure> <img class="city-icon" src="${icon}" alt="${weather[0]["description"]}"></figure>
+              </span>
             </h2>
             <div class="city-temp">Temp: ${Math.round(main.temp)}<sup>°</sup>C</div>
             <div class="city-wind">Wind: ${wind.speed} Km/h</div>
-            <div class="city-humidity">Humidity: ${main.humidity}%</div>>
-            <div class="city-UVI"> UV index: ${current.uvi}</div>
-            <figure>
-              <img class="city-icon" src="${icon}" alt="${
-              weather[0]["description"]}">
-              <figcaption>${weather[0]["description"]}</figcaption>
-            </figure>
+            <div class="city-humidity">Humidity: ${main.humidity}%</div>
+            <div class="city-UVI" id="UVI"> UV index: <span>${current.uvi}</span></div>
           `;
-          
+
           li.innerHTML = markup;
           list.appendChild(li);
-          // return responseBodyI;
+          
+          colorCode(data2.current.uvi);
+
           }).catch(err => {
-            console.error('Failed to fetch - ' + urlInner);
+            console.error('Failed to fetch - ' + urlInner);    
         });
-        
+
         }).catch(err => {
           console.error('Failed to fetch - ' + urlOuter);
       });
     });
 
+    const uvi = JSON.parse(localStorage.getItem("uvi")) || [];
+    console.log(uvi);
 
-//   fetch(url)
-//     .then(response => response.json())
-//     .then(data => {
-//       const { main, coord, name, sys, weather, wind, dt } = data;
-//       const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
-//         weather[0]["icon"]
-//       }.svg`;
-
-//       const unixTime = data.dt;
-//       const date = new Date(unixTime*1000);
-//       const date1= date.toLocaleDateString("en-US");
-
-//       const coord = data.coord;
+    function colorCode(uvi) {
+      console.log("uvi value inside cc f", uvi)
+    // const uviID = uvi.id;
+    // uvi.removeClass(".favorable .moderate .severe");
       
-//       const li = document.createElement("li");
-//       li.classList.add("city");
-//       const markup = `
-//         <h2 class="city-name" data-name="${name},${sys.country}">
-//           <span>${name}, ${sys.country} (${date1})</span>
-//         </h2>
-//         <div class="city-temp">Temp: ${Math.round(main.temp)}<sup>°</sup>C</div>
-//         <div class="city-wind">Wind: ${wind.speed} Km/h</div>
-//         <div class="city-humidity">Humidity: ${main.humidity}%</div>>
-//         <figure>
-//           <img class="city-icon" src="${icon}" alt="${
-//         weather[0]["description"]}">
-//           <figcaption>${weather[0]["description"]}</figcaption>
-//         </figure>
-//       `;
-//       li.innerHTML = markup;
-//       list.appendChild(li);
-//     })
-//     .catch(() => {
-//       msg.textContent = "Please search for a valid city";
-//     });
-
-//   msg.textContent = "";
-//   form.reset();
-//   input.focus();
-
-// });
+      if (uvi < 2) {
+        $("#UVI").addClass("favorable");
+      } else if (uvi >= 2 & uvi < 5) {
+        $("UVI").addClass("moderate");
+      } else {
+        $("UVI").addClass("severe");
+      }    
+    
+    }
 
 // save city
-
 const cities = JSON.parse(localStorage.getItem("input")) || [];
 
 function saveCity() {
@@ -179,13 +144,10 @@ function cityListHandler(event) {
     saveCity();
 
     const cityList = document.getElementById("cityList");
-    const cities = JSON.parse(localStorage.getItem("input")) || [];
-
-    // const li = document.createElement("li");
-    // li.classList.add("cityList");
-    // li.innerHTML = cities;
-    // list.appendChild(li);
-
+    const cities = JSON.parse(localStorage.getItem("cities")) || [];
+    console.log(cityList);
+    console.log(cities);
+    
     cityList.innerHTML = cities
         .map(cities => {
             return `<li>${cities.name}</li>`;
@@ -194,5 +156,3 @@ function cityListHandler(event) {
 }
 
 submit_btn.addEventListener("click", cityListHandler);
-
-
