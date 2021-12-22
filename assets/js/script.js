@@ -80,7 +80,7 @@ form.addEventListener("submit", e => {
           // localStorage.setItem("uvi", JSON.stringify(data2));
           // console.log(data2);
 
-          const li = document.createElement("li");
+          const li = document.createElement("span");
           li.classList.add("city");
           const markup = `
             <h2 class="city-name" data-name="${name},${sys.country}">
@@ -150,9 +150,11 @@ function cityListHandler(event) {
     
     cityList.innerHTML = cities
         .map(cities => {
-            return `<li>${cities.name}</li>`;
+            return `<span>${cities.name}</span>`;
         })
         .join("");
+
+    // cityList.classList = "list-item flex-row justify-space-between align-center form-group button btn btn-primary";
 }
 
 submit_btn.addEventListener("click", cityListHandler);
