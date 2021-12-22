@@ -116,11 +116,11 @@ form.addEventListener("submit", e => {
     // uvi.removeClass(".favorable .moderate .severe");
       
       if (uvi < 2) {
-        $("#UVI").addClass("favorable");
+        $("#UVI").children('span').addClass("favorable");
       } else if (uvi >= 2 & uvi < 5) {
-        $("UVI").addClass("moderate");
+        $("UVI").children('span').addClass("moderate");
       } else {
-        $("UVI").addClass("severe");
+        $("UVI").children('span').addClass("severe");
       }    
     
     }
