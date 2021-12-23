@@ -157,7 +157,7 @@ function cityListHandler(event) {
     for (var i = 0; i < cities.length; i++) {
      
       var cityEl = document.createElement("button");
-      cityEl.classList = "list-item flex-row justify-space-between align-center";
+      cityEl.classList = "btn btn-secondary list-item";
       var titleEl = document.createElement("span");
       titleEl.textContent = cities[i].name;
       cityEl.appendChild(titleEl);
@@ -172,9 +172,9 @@ function fetchWeatherData(event) {
   // const selectedCity = document.querySelector("#cityList");
   // let inputVal = selectedCity.value;
 
-  for (var i = 0; i < cities.lenght; i++) {
+  for (var i = 0; i < cities.length; i++) {
     const cities = JSON.parse(localStorage.getItem("cities")) || [];
-    let inputVal = cities.name[i].value;
+    let inputVal = cities[i].name;
     console.log(inputVal);
 
     const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
