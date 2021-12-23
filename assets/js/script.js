@@ -114,18 +114,19 @@ form.addEventListener("submit", e => {
 
     function colorCode(uvi) {
       console.log("uvi value inside cc f", uvi)
-    // const uviID = uvi.id;
-    // uvi.removeClass(".favorable .moderate .severe");
-      
+    
+      // uvi.removeClass(".favorable .moderate .severe");
+
       if (uvi < 2) {
         $("#UVI").children('span').addClass("favorable");
-      } else if (uvi >= 2 & uvi < 5) {
+      } else if ((uvi >= 2) & (uvi < 5)) {
         $("UVI").children('span').addClass("moderate");
-      } else {
+      } else if (uvi >= 5) {
         $("UVI").children('span').addClass("severe");
-      }    
-    
-    }
+    }  
+  
+  cityList.addEventListener("click", fetch(outerUrl));   
+}
 
 // save city
 const cities = JSON.parse(localStorage.getItem("input")) || [];
@@ -140,8 +141,6 @@ function saveCity() {
 
     localStorage.setItem("cities", JSON.stringify(cities));
     console.log(cities);
-
-    
 };
 
 function cityListHandler(event) {
@@ -157,21 +156,14 @@ function cityListHandler(event) {
 
     for (var i = 0; i < cities.length; i++) {
      
-      var cityEl = document.createElement("a");
-      // cityEl.classList = "list-item flex-row justify-space-between align-center";
-      // repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
+      var cityEl = document.createElement("button");
+      cityEl.classList = "list-item flex-row justify-space-between align-center";
       var titleEl = document.createElement("span");
       titleEl.textContent = cities[i].name;
       cityEl.appendChild(titleEl);
       cityList.appendChild(cityEl);
     } 
-
-    // cityList.innerHTML = cities
-    //     .map(cities => {
-    //         return `<span>${cities.name}</span>`;
-    //     })
-    //     .join("");
-
 }
 
 submit_btn.addEventListener("click", cityListHandler);
+
