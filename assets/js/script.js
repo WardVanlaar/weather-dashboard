@@ -147,14 +147,23 @@ function cityListHandler(event) {
     const cities = JSON.parse(localStorage.getItem("cities")) || [];
     console.log(cityList);
     console.log(cities);
-    
-    cityList.innerHTML = cities
-        .map(cities => {
-            return `<span>${cities.name}</span>`;
-        })
-        .join("");
 
-    // cityList.classList = "list-item flex-row justify-space-between align-center form-group button btn btn-primary";
+    for (var i = 0; i < cities.length; i++) {
+      var cityEl = document.createElement("a");
+      // cityEl.classList = "list-item flex-row justify-space-between align-center";
+      // repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
+      var titleEl = document.createElement("span");
+      titleEl.textContent = cities[i].name;
+      cityEl.appendChild(titleEl);
+      cityList.appendChild(cityEl);
+    } 
+    
+    // cityList.innerHTML = cities
+    //     .map(cities => {
+    //         return `<span>${cities.name}</span>`;
+    //     })
+    //     .join("");
+
 }
 
 submit_btn.addEventListener("click", cityListHandler);
