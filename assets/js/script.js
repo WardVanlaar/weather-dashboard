@@ -80,6 +80,8 @@ form.addEventListener("submit", e => {
           // localStorage.setItem("uvi", JSON.stringify(data2));
           // console.log(data2);
 
+          city.textContent = "";
+
           const li = document.createElement("span");
           li.classList.add("city");
           const markup = `
@@ -129,6 +131,7 @@ form.addEventListener("submit", e => {
 const cities = JSON.parse(localStorage.getItem("input")) || [];
 
 function saveCity() {
+
     var cityInput = document.getElementById("input").value;
     const newList = {
         name: cityInput
@@ -137,6 +140,8 @@ function saveCity() {
 
     localStorage.setItem("cities", JSON.stringify(cities));
     console.log(cities);
+
+    
 };
 
 function cityListHandler(event) {
@@ -148,7 +153,10 @@ function cityListHandler(event) {
     console.log(cityList);
     console.log(cities);
 
+    cityList.textContent = "";
+
     for (var i = 0; i < cities.length; i++) {
+     
       var cityEl = document.createElement("a");
       // cityEl.classList = "list-item flex-row justify-space-between align-center";
       // repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
@@ -157,7 +165,7 @@ function cityListHandler(event) {
       cityEl.appendChild(titleEl);
       cityList.appendChild(cityEl);
     } 
-    
+
     // cityList.innerHTML = cities
     //     .map(cities => {
     //         return `<span>${cities.name}</span>`;
