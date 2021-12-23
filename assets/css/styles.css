@@ -51,6 +51,47 @@ body {
     width: 100%;
 }
 
+.favorable {
+  background-color: green;
+  color: black;
+}
+
+.moderate {
+  background-color: orange;
+  color: black;
+}
+
+.severe {
+  background-color: red;
+  color: black;
+}
+
+.list-group {
+  padding: 0px;
+  list-style: none;
+}
+
+.list-item {
+  margin: 10px 0;
+  padding: 10px;
+}
+
+.flex-row {
+display: flex;
+flex-wrap: wrap;
+}
+
+.justify-space-between {
+justify-content: space-between;
+}
+
+.align-center {
+  align-items: center;
+}
+
+
+
+
 /* #message {
   border: 1px solid grey;
 } */
