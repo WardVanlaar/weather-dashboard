@@ -172,12 +172,14 @@ function fetchWeatherData(event) {
   // const selectedCity = document.querySelector("#cityList");
   // let inputVal = selectedCity.value;
 
-  for (var i = 0; i < cities.length; i++) {
-    const cities = JSON.parse(localStorage.getItem("cities")) || [];
-    let inputVal = cities[i].name;
-    console.log(inputVal);
+  inputVal = cities[i].name.value;
+  console.log(inputVal);
+  inputVal.textContent = "";
 
-    const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
+  for (var i = 0; i < cities.length; i++) {
+    // const cities = JSON.parse(localStorage.getItem("cities")) || [];
+    
+    const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal[i]}&appid=${apiKey}&units=metric`;
     let urlInner = '';
       
     const resultPromise = fetch(urlOuter)
