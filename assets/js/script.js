@@ -36,7 +36,7 @@ form.addEventListener("submit", e => {
       const neededValue1 = data.coord.lat;
       const neededValue2 = data.coord.lon;
 
-      urlInner = `https://api.openweathermap.org/data/2.5/onecall?lat=${neededValue1}&lon=${neededValue2}&exclude=hourly,daily&appid=${apiKey}`;
+      urlInner = `https://api.openweathermap.org/data/2.5/onecall?lat=${neededValue1}&lon=${neededValue2}&appid=${apiKey}`;
       return fetch(urlInner)
         .then(responseI => responseI.json())
         .then(data2 => {
@@ -63,6 +63,7 @@ form.addEventListener("submit", e => {
           list.appendChild(li);
           
           colorCode(data2.current.uvi);
+          loadForecast(data2);
 
           }).catch(err => {
             console.error('Failed to fetch - ' + urlInner);   
@@ -90,35 +91,36 @@ form.addEventListener("submit", e => {
       } else {
         $("UVI").children('span').addClass("severe");
     }  
-  loadForecast();
+  
 }
 
 // 5-day forecast, adapted from Jacob Liberty
 // Create the Daily Forecast divs
 function loadForecast(data) {
+  console.log(data)
   // Create divs if none
   if ( $('#forecast').children().length == 0 ){
     for (let i=0; i<6; i++){
       let day = moment().add(i, 'days').format('L');
-      let icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${data2.daily[i].weather[0].icon}.svg`;
+      let icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${data.daily[i].weather[0].icon}.svg`;
       $('#forecast').append(`<div class='dailyForecast' id='forecast${i}'></div>`);
       $(`#forecast${i}`).append(`<h3 class='forecastDate' id='date${i}'>${day}</h3>`);
       $(`#forecast${i}`).append(`<image class='forecastIcon' id='icon${i}' src='${icon}'></image>`);
-      $(`#forecast${i}`).append(`<p class='forecastText' id='temp${i}'>Temp: ${data2.daily[i].temp.day}°C</p>`);
-      $(`#forecast${i}`).append(`<p class='forecastText' id='wind${i}'>Wind: ${data2.daily[i].wind_speed}kph</p>`);
-      $(`#forecast${i}`).append(`<p class='forecastText' id='humid${i}'>Humidity: ${data2.daily[i].humidity}%</p>`);
+      $(`#forecast${i}`).append(`<p class='forecastText' id='temp${i}'>Temp: ${data.daily[i].temp.day}°C</p>`);
+      $(`#forecast${i}`).append(`<p class='forecastText' id='wind${i}'>Wind: ${data.daily[i].wind_speed}kph</p>`);
+      $(`#forecast${i}`).append(`<p class='forecastText' id='humid${i}'>Humidity: ${data.daily[i].humidity}%</p>`);
     };
   }
   // Rewrite content if there are divs 
   else {
     for (let i=0; i<6; i++){
       let day = moment().add(i, 'days').format('L');
-      let icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${data2.daily[i].weather[0].icon}.svg`;
+      let icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${data.daily[i].weather[0].icon}.svg`;
       document.getElementById(`date${i}`).innerHTML = day;
       document.getElementById(`icon${i}`).src = icon;
-      document.getElementById(`temp${i}`).innerHTML = `Temp: ${data2.daily[i].temp.day}`;
-      document.getElementById(`wind${i}`).innerHTML = `Wind: ${data2.daily[i].wind_speed}`;
-      document.getElementById(`humid${i}`).innerHTML = `Humidity: ${data2.daily[i].humidity}`;
+      document.getElementById(`temp${i}`).innerHTML = `Temp: ${data.daily[i].temp.day}`;
+      document.getElementById(`wind${i}`).innerHTML = `Wind: ${data.daily[i].wind_speed}`;
+      document.getElementById(`humid${i}`).innerHTML = `Humidity: ${data.daily[i].humidity}`;
     }
   }
 }
