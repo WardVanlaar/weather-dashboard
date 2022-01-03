@@ -77,17 +77,15 @@ form.addEventListener("submit", e => {
     });
 
     function colorCode(uvi) {
+        console.log(uvi)
       
-      // uvi.removeClass(".favorable .moderate .severe");
-
       if (uvi < 2) {
         $("#UVI").children('span').addClass("favorable");
-      } else if ((uvi >= 2) & (uvi < 5)) {
-        $("UVI").children('span').addClass("moderate");
+      } else if (uvi > 5) {
+        $("#UVI").children('span').addClass("severe");
       } else {
-        $("UVI").children('span').addClass("severe");
-    }  
-  
+        $("#UVI").children('span').addClass("moderate");
+      }  
 }
 
 // 5-day forecast, adapted from Jacob Liberty
