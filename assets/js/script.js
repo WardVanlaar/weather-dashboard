@@ -76,9 +76,6 @@ form.addEventListener("submit", e => {
       });
     });
 
-    // const uvi = JSON.parse(localStorage.getItem("uvi")) || [];
-    // console.log(uvi);
-
     function colorCode(uvi) {
       
       // uvi.removeClass(".favorable .moderate .severe");
@@ -112,7 +109,7 @@ function loadForecast(data) {
   }
   // Rewrite content if there are divs 
   else {
-    for (let i=0; i<6; i++){
+    for (let i=0; i<5; i++){
       let day = moment().add(i, 'days').format('L');
       let icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${data.daily[i].weather[0].icon}.svg`;
       document.getElementById(`date${i}`).innerHTML = day;
@@ -161,10 +158,11 @@ function cityListHandler(event) {
     } 
 }
 
-// to retrieve weather data from cities in search history list
-function fetchWeatherData(event) {
 
-}
+// // to retrieve weather data from cities in search history list
+// function fetchWeatherData(event) {
+
+// }
 
 submit_btn.addEventListener("click", cityListHandler);
-cityList.addEventListener("click", fetchWeatherData);
+// cityList.addEventListener("click", fetchWeatherData);
