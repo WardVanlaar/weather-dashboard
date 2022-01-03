@@ -1,62 +1,26 @@
 //adapted from: https://webdesign.tutsplus.com/tutorials/build-a-simple-weather-app-with-vanilla-javascript--cms-33893
 //adapted from https://medium.com/@arifkabir/building-a-weather-app-using-javascript-css-1f05f160a3b0
 
-
 // references to index-file
 const form = document.querySelector("#input-form");
 const input = document.querySelector("#input");
 const msg = document.querySelector("#message");
 const list = document.querySelector("#city");
-//will have to add references to 5-day forecast
 
 // API key obtained from https://home.openweathermap.org
 const apiKey = "9173d4a8ceb0b3884e0d4a9dd7768ed0";
 
-// capture city
+// // capture city
 form.addEventListener("submit", e => {
   e.preventDefault();
   let inputVal = input.value;
-
-  //check if there's already a city
-  const listItems = list.querySelectorAll("#city");
-  const listItemsArray = Array.from(listItems);
-
-  if (listItemsArray.length > 0) {
-    const filteredArray = listItemsArray.filter(el => {
-      let content = "";
-
-      if (inputVal.includes(",")) {
-
-        if (inputVal.split(",")[1].length > 2) {
-          inputVal = inputVal.split(",")[0];
-          content = el
-            .querySelector(".city-name span")
-            .textContent.toLowerCase();
-        } else {
-          content = el.querySelector(".city-name").dataset.name.toLowerCase();
-        }
-      } else {
-        content = el.querySelector(".city-name span").textContent.toLowerCase();
-      }
-      return content == inputVal.toLowerCase();
-    });
-
-    if (filteredArray.length > 0) {
-      msg.textContent = `You already know the weather for ${
-        filteredArray[0].querySelector(".city-name span").textContent
-      } ...otherwise be more specific by providing the country code as well`;
-      form.reset();
-      input.focus();
-      return;
-    }
-  }
 
   // fetch weather data, including nested fetch statement to get UV-index
   // adapted from https://stackoverflow.com/questions/40981040/using-a-fetch-inside-another-fetch-in-javascript
 
   const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
   let urlInner = '';
-  
+
   const resultPromise = fetch(urlOuter)
     .then(responseO => responseO.json())
     .then(data => {
@@ -69,14 +33,14 @@ form.addEventListener("submit", e => {
       const date = new Date(unixTime*1000);
       const date1= date.toLocaleDateString("en-US");
 
-      const neededValue1 = data.coord.lon;
-      const neededValue2 = data.coord.lat;
+      const neededValue1 = data.coord.lat;
+      const neededValue2 = data.coord.lon;
 
-      urlInner = `https://api.openweathermap.org/data/2.5/onecall?lat=${neededValue2}&lon=${neededValue1}&exclude=hourly,daily&appid=${apiKey}`;
+      urlInner = `https://api.openweathermap.org/data/2.5/onecall?lat=${neededValue1}&lon=${neededValue2}&exclude=hourly,daily&appid=${apiKey}`;
       return fetch(urlInner)
         .then(responseI => responseI.json())
         .then(data2 => {
-          const {current} = data2;
+          const {current, daily} = data2;
           // localStorage.setItem("uvi", JSON.stringify(data2));
           // console.log(data2);
 
@@ -111,8 +75,8 @@ form.addEventListener("submit", e => {
       });
     });
 
-    const uvi = JSON.parse(localStorage.getItem("uvi")) || [];
-    console.log(uvi);
+    // const uvi = JSON.parse(localStorage.getItem("uvi")) || [];
+    // console.log(uvi);
 
     function colorCode(uvi) {
       console.log("uvi value inside cc f", uvi)
@@ -123,9 +87,40 @@ form.addEventListener("submit", e => {
         $("#UVI").children('span').addClass("favorable");
       } else if ((uvi >= 2) & (uvi < 5)) {
         $("UVI").children('span').addClass("moderate");
-      } else if (uvi >= 5) {
+      } else {
         $("UVI").children('span').addClass("severe");
     }  
+  loadForecast();
+}
+
+// 5-day forecast, adapted from Jacob Liberty
+// Create the Daily Forecast divs
+function loadForecast(data) {
+  // Create divs if none
+  if ( $('#forecast').children().length == 0 ){
+    for (let i=0; i<6; i++){
+      let day = moment().add(i, 'days').format('L');
+      let icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${data2.daily[i].weather[0].icon}.svg`;
+      $('#forecast').append(`<div class='dailyForecast' id='forecast${i}'></div>`);
+      $(`#forecast${i}`).append(`<h3 class='forecastDate' id='date${i}'>${day}</h3>`);
+      $(`#forecast${i}`).append(`<image class='forecastIcon' id='icon${i}' src='${icon}'></image>`);
+      $(`#forecast${i}`).append(`<p class='forecastText' id='temp${i}'>Temp: ${data2.daily[i].temp.day}°C</p>`);
+      $(`#forecast${i}`).append(`<p class='forecastText' id='wind${i}'>Wind: ${data2.daily[i].wind_speed}kph</p>`);
+      $(`#forecast${i}`).append(`<p class='forecastText' id='humid${i}'>Humidity: ${data2.daily[i].humidity}%</p>`);
+    };
+  }
+  // Rewrite content if there are divs 
+  else {
+    for (let i=0; i<6; i++){
+      let day = moment().add(i, 'days').format('L');
+      let icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${data2.daily[i].weather[0].icon}.svg`;
+      document.getElementById(`date${i}`).innerHTML = day;
+      document.getElementById(`icon${i}`).src = icon;
+      document.getElementById(`temp${i}`).innerHTML = `Temp: ${data2.daily[i].temp.day}`;
+      document.getElementById(`wind${i}`).innerHTML = `Wind: ${data2.daily[i].wind_speed}`;
+      document.getElementById(`humid${i}`).innerHTML = `Humidity: ${data2.daily[i].humidity}`;
+    }
+  }
 }
 
 // save city
@@ -167,92 +162,8 @@ function cityListHandler(event) {
 
 // to retrieve weather data from cities in search history list
 function fetchWeatherData(event) {
-  
-  // e.preventDefault();
-  // const selectedCity = document.querySelector("#cityList");
-  // let inputVal = selectedCity.value;
 
-  inputVal = cities[i].name.value;
-  console.log(inputVal);
-  inputVal.textContent = "";
-
-  for (var i = 0; i < cities.length; i++) {
-    // const cities = JSON.parse(localStorage.getItem("cities")) || [];
-    
-    const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal[i]}&appid=${apiKey}&units=metric`;
-    let urlInner = '';
-      
-    const resultPromise = fetch(urlOuter)
-        .then(responseO => responseO.json())
-        .then(data => {
-          const { main, coord, name, sys, weather, wind, dt } = data;
-          const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
-            weather[0]["icon"]
-          }.svg`;
-          
-          const unixTime = data.dt;
-          const date = new Date(unixTime*1000);
-          const date1= date.toLocaleDateString("en-US");
-
-          const neededValue1 = data.coord.lon;
-          const neededValue2 = data.coord.lat;
-
-          urlInner = `https://api.openweathermap.org/data/2.5/onecall?lat=${neededValue2}&lon=${neededValue1}&exclude=hourly,daily&appid=${apiKey}`;
-          return fetch(urlInner)
-            .then(responseI => responseI.json())
-            .then(data2 => {
-              const {current} = data2;
-              // localStorage.setItem("uvi", JSON.stringify(data2));
-              // console.log(data2);
-
-              city.textContent = "";
-
-              const li = document.createElement("span");
-              li.classList.add("city");
-              const markup = `
-                <h2 class="city-name" data-name="${name},${sys.country}">
-                  <span>${name}, ${sys.country} (${date1}) <figure> <img class="city-icon" src="${icon}" alt="${weather[0]["description"]}"></figure>
-                  </span>
-                </h2>
-                <div class="city-temp">Temp: ${Math.round(main.temp)}<sup>°</sup>C</div>
-                <div class="city-wind">Wind: ${wind.speed} Km/h</div>
-                <div class="city-humidity">Humidity: ${main.humidity}%</div>
-                <div class="city-UVI" id="UVI"> UV index: <span>${current.uvi}</span></div>
-              `;
-
-              li.innerHTML = markup;
-              list.appendChild(li);
-              
-              colorCode(data2.current.uvi);
-
-              }).catch(err => {
-                console.error('Failed to fetch - ' + urlInner);   
-                console.log(urlOuter);
-                console.log(urlInner);
-            });
-
-            }).catch(err => {
-              console.error('Failed to fetch - ' + urlOuter);
-          });
-        };
-
-        // const uvi = JSON.parse(localStorage.getItem("uvi")) || [];
-        // console.log(uvi);
-
-        function colorCode(uvi) {
-          console.log("uvi value inside cc f", uvi)
-        
-          // uvi.removeClass(".favorable .moderate .severe");
-
-          if (uvi < 2) {
-            $("#UVI").children('span').addClass("favorable");
-          } else if ((uvi >= 2) & (uvi < 5)) {
-            $("UVI").children('span').addClass("moderate");
-          } else if (uvi >= 5) {
-            $("UVI").children('span').addClass("severe");
-        }
-      }    
-  }
+}
 
 submit_btn.addEventListener("click", cityListHandler);
 cityList.addEventListener("click", fetchWeatherData);
