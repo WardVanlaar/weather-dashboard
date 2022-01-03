@@ -80,8 +80,7 @@ form.addEventListener("submit", e => {
     // console.log(uvi);
 
     function colorCode(uvi) {
-      console.log("uvi value inside cc f", uvi)
-    
+      
       // uvi.removeClass(".favorable .moderate .severe");
 
       if (uvi < 2) {
@@ -100,7 +99,7 @@ function loadForecast(data) {
   console.log(data)
   // Create divs if none
   if ( $('#forecast').children().length == 0 ){
-    for (let i=0; i<6; i++){
+    for (let i=0; i<5; i++){
       let day = moment().add(i, 'days').format('L');
       let icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${data.daily[i].weather[0].icon}.svg`;
       $('#forecast').append(`<div class='dailyForecast' id='forecast${i}'></div>`);
