@@ -20,7 +20,7 @@ body {
 }
 
 .wrapper{
-    margin: 100px;
+    margin: 70px;
     border: 2px solid #ff1e42;
     border-radius: 12px;
 }
@@ -44,7 +44,7 @@ body {
 
 .form-group input {
     padding: 3px;
-    margin-bottom: 3px;
+    margin: 5px 0;
 }
 
 .form-group button {
@@ -72,8 +72,8 @@ body {
 }
 
 .list-item {
-  margin: 10px 0;
-  padding: 10px;
+  margin: 3px 0;
+  padding: 5px;
 }
 
 .flex-row {
@@ -89,5 +89,46 @@ justify-content: space-between;
   align-items: center;
 }
 
+.border {
+  border: 3px solid #ff1e42;
+  border-radius: 12px;
+}
 
+.separation-line {
+  margin-bottom: 2px;
+  margin-top: 2px;
+  border-bottom: 2px solid #ff1e42;
+}
 
+.row h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 8px;
+  margin-top: 7px;
+}
+
+.dailyForecast {
+  background-color: #143346;
+  flex-basis: auto;
+  width: 153px;
+  height: 265px;
+  margin: 7px;
+}
+
+.forecastDate {
+  margin-left: 5px;
+  color: white;
+  font-size: 20px;
+}
+
+.forecastText {
+  color: white;
+  text-align: left;
+  margin: 5px 10px;
+  font-style: bold;
+  font-size: 18px;
+}
+
+/* #city h2 {
+  font-weight: bold;
+} */

@@ -33,22 +33,19 @@
                         <div class="form-group">
                             <label>Search for a City:</label>
                             <input type="text" class="form-control" placeholder="Ottawa" id="input">
-                            <button type="submit" class="btn btn-primary" id="submit_btn">Submit</button>
+                            <button type="submit" class="btn btn-primary list-item" id="submit_btn">Submit</button>
+                            <div class="separation-line"></div>
                             <span class="msg" id="message"></span>
-                            <div class="btn" id="cityList"></div>
+                            <div id="cityList"></div>
                         </div>
                     </form>
                     <div class="col-9 col-sm-9">
-                        <div class="row">
+                        <div class="row border">
                             <div class="cities col-9 col-sm-9" id="city"></div>
                         </div>
                         <div class="row">
-                            <div class="d-flex justify-content-between">
-                                <div class="5-day-forecast">1</div>
-                                <div class="5-day-forecast">2</div>
-                                <div class="5-day-forecast">3</div>
-                                <div class="5-day-forecast">4</div>
-                                <div class="5-day-forecast">5</div>
+                            <h2 class="d-flex flex-column">5-Day Forecast:</h2>
+                            <div class="d-flex justify-content-between" id="forecast">
                             </div>
                         </div>
                     </div>
