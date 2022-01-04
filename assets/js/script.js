@@ -10,7 +10,7 @@ const list = document.querySelector("#city");
 // API key obtained from https://home.openweathermap.org
 const apiKey = "9173d4a8ceb0b3884e0d4a9dd7768ed0";
 
-// // capture city
+// capture city
 form.addEventListener("submit", e => {
   e.preventDefault();
   let inputVal = input.value;
@@ -22,72 +22,60 @@ form.addEventListener("submit", e => {
   const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
   let urlInner = '';
 
-    fetch(urlOuter)
-    .then(responseO => responseO.json())
-    .then(data => {
-      const { main, coord, name, sys, weather, wind, dt } = data;
-      const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
-        weather[0]["icon"]
-      }.svg`;
-      
-      const unixTime = data.dt;
-      const date = new Date(unixTime*1000);
-      const date1= date.toLocaleDateString("en-US");
+  fetch(urlOuter)
+  .then(responseO => responseO.json())
+  .then(data => {
+    const { main, coord, name, sys, weather, wind, dt } = data;
+    const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
+      weather[0]["icon"]
+    }.svg`;
+    
+    const unixTime = data.dt;
+    const date = new Date(unixTime*1000);
+    const date1= date.toLocaleDateString("en-US");
 
-      const neededValue1 = data.coord.lat;
-      const neededValue2 = data.coord.lon;
+    const neededValue1 = data.coord.lat;
+    const neededValue2 = data.coord.lon;
 
-      urlInner = `https://api.openweathermap.org/data/2.5/onecall?lat=${neededValue1}&lon=${neededValue2}&appid=${apiKey}`;
-      return fetch(urlInner)
-        .then(responseI => responseI.json())
-        .then(data2 => {
-          const {current, daily} = data2;
-          // localStorage.setItem("uvi", JSON.stringify(data2));
-          // console.log(data2);
+    urlInner = `https://api.openweathermap.org/data/2.5/onecall?lat=${neededValue1}&lon=${neededValue2}&appid=${apiKey}`;
+    return fetch(urlInner)
+      .then(responseI => responseI.json())
+      .then(data2 => {
+        const {current, daily} = data2;
+        // localStorage.setItem("uvi", JSON.stringify(data2));
+        // console.log(data2);
 
-          city.textContent = "";
+        city.textContent = "";
 
-          const li = document.createElement("span");
-          li.classList.add("city");
-          const markup = `
-            <h2 class="city-name" data-name="${name},${sys.country}">
-              <span>${name}, ${sys.country} (${date1}) <figure> <img class="city-icon" src="${icon}" alt="${weather[0]["description"]}"></figure>
-              </span>
-            </h2>
-            <div class="city-temp">Temp: ${Math.round(main.temp)}<sup>°</sup>C</div>
-            <div class="city-wind">Wind: ${wind.speed} Km/h</div>
-            <div class="city-humidity">Humidity: ${main.humidity}%</div>
-            <div class="city-UVI" id="UVI"> UV index: <span>${current.uvi}</span></div>
-          `;
+        const li = document.createElement("span");
+        li.classList.add("city");
+        const markup = `
+          <h2 class="city-name" data-name="${name},${sys.country}">
+            <span>${name}, ${sys.country} (${date1}) <figure> <img class="city-icon" src="${icon}" alt="${weather[0]["description"]}"></figure>
+            </span>
+          </h2>
+          <div class="city-temp">Temp: ${Math.round(main.temp)}<sup>°</sup>C</div>
+          <div class="city-wind">Wind: ${wind.speed} Km/h</div>
+          <div class="city-humidity">Humidity: ${main.humidity}%</div>
+          <div class="city-UVI" id="UVI"> UV index: <span>${current.uvi}</span></div>
+        `;
 
-          li.innerHTML = markup;
-          list.appendChild(li);
-          
-          colorCode(data2.current.uvi);
-          loadForecast(data2);
-
-          }).catch(err => {
-            console.error('Failed to fetch - ' + urlInner);   
-            console.log(urlOuter);
-            console.log(urlInner);
-        });
+        li.innerHTML = markup;
+        list.appendChild(li);
+        
+        colorCode(data2.current.uvi);
+        loadForecast(data2);
 
         }).catch(err => {
-          console.error('Failed to fetch - ' + urlOuter);
-      });
-    });
+          console.error('Failed to fetch - ' + urlInner);   
+          console.log(urlOuter);
+          console.log(urlInner);
+        });
 
-    function colorCode(uvi) {
-        console.log(uvi)
-      
-      if (uvi < 2) {
-        $("#UVI").children('span').addClass("favorable");
-      } else if (uvi > 5) {
-        $("#UVI").children('span').addClass("severe");
-      } else {
-        $("#UVI").children('span').addClass("moderate");
-      }  
-}
+      }).catch(err => {
+        console.error('Failed to fetch - ' + urlOuter);
+      });
+});
 
 // 5-day forecast, adapted from Jacob Liberty
 // Create the Daily Forecast divs
@@ -150,7 +138,7 @@ function cityListHandler(event) {
      
       var cityEl = document.createElement("button");
       cityEl.classList = "btn btn-secondary list-item";
-      cityEl.onclick = fetchWeatherData();
+      // cityEl.onclick = fetchWeatherData();
       var titleEl = document.createElement("span");
       titleEl.textContent = cities[i].name;
       cityEl.appendChild(titleEl);
@@ -158,75 +146,77 @@ function cityListHandler(event) {
     } 
 }
 
-// To load city from search history
-function fetchWeatherData(event) {
-    let inputVal = event.target.innerText;
-    const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
-    let urlInner = '';
+function colorCode(uvi) {
+  console.log(uvi)
 
-    fetch(urlOuter)
-    .then(responseO => responseO.json())
-    .then(data => {
-      const { main, coord, name, sys, weather, wind, dt } = data;
-      const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
-        weather[0]["icon"]
-      }.svg`;
+if (uvi < 2) {
+  $("#UVI").children('span').addClass("favorable");
+  } else if (uvi > 5) {
+  $("#UVI").children('span').addClass("severe");
+  } else {
+  $("#UVI").children('span').addClass("moderate");
+  }
+};
+
+// // To load city from search history
+// function fetchWeatherData(event) {
+//     let inputVal = event.target.innerText;
+//     const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
+//     let urlInner = '';
+
+//     fetch(urlOuter)
+//     .then(responseO => responseO.json())
+//     .then(data => {
+//       const { main, coord, name, sys, weather, wind, dt } = data;
+//       const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
+//         weather[0]["icon"]
+//       }.svg`;
       
-      const unixTime = data.dt;
-      const date = new Date(unixTime*1000);
-      const date1= date.toLocaleDateString("en-US");
+//       const unixTime = data.dt;
+//       const date = new Date(unixTime*1000);
+//       const date1= date.toLocaleDateString("en-US");
 
-      const neededValue1 = data.coord.lat;
-      const neededValue2 = data.coord.lon;
+//       const neededValue1 = data.coord.lat;
+//       const neededValue2 = data.coord.lon;
 
-      urlInner = `https://api.openweathermap.org/data/2.5/onecall?lat=${neededValue1}&lon=${neededValue2}&appid=${apiKey}`;
-      return fetch(urlInner)
-        .then(responseI => responseI.json())
-        .then(data2 => {
-          const {current, daily} = data2;
-          // localStorage.setItem("uvi", JSON.stringify(data2));
-          // console.log(data2);
+//       urlInner = `https://api.openweathermap.org/data/2.5/onecall?lat=${neededValue1}&lon=${neededValue2}&appid=${apiKey}`;
+//       return fetch(urlInner)
+//         .then(responseI => responseI.json())
+//         .then(data2 => {
+//           const {current, daily} = data2;
+//           // localStorage.setItem("uvi", JSON.stringify(data2));
+//           // console.log(data2);
 
-          city.textContent = "";
+//           city.textContent = "";
 
-          const li = document.createElement("span");
-          li.classList.add("city");
-          const markup = `
-            <h2 class="city-name" data-name="${name},${sys.country}">
-              <span>${name}, ${sys.country} (${date1}) <figure> <img class="city-icon" src="${icon}" alt="${weather[0]["description"]}"></figure>
-              </span>
-            </h2>
-            <div class="city-temp">Temp: ${Math.round(main.temp)}<sup>°</sup>C</div>
-            <div class="city-wind">Wind: ${wind.speed} Km/h</div>
-            <div class="city-humidity">Humidity: ${main.humidity}%</div>
-            <div class="city-UVI" id="UVI"> UV index: <span>${current.uvi}</span></div>
-          `;
+//           const li = document.createElement("span");
+//           li.classList.add("city");
+//           const markup = `
+//             <h2 class="city-name" data-name="${name},${sys.country}">
+//               <span>${name}, ${sys.country} (${date1}) <figure> <img class="city-icon" src="${icon}" alt="${weather[0]["description"]}"></figure>
+//               </span>
+//             </h2>
+//             <div class="city-temp">Temp: ${Math.round(main.temp)}<sup>°</sup>C</div>
+//             <div class="city-wind">Wind: ${wind.speed} Km/h</div>
+//             <div class="city-humidity">Humidity: ${main.humidity}%</div>
+//             <div class="city-UVI" id="UVI"> UV index: <span>${current.uvi}</span></div>
+//           `;
 
-          li.innerHTML = markup;
-          list.appendChild(li);
+//           li.innerHTML = markup;
+//           list.appendChild(li);
           
-          colorCode(data2.current.uvi);
-          loadForecast(data2);
+//           colorCode(data2.current.uvi);
+//           loadForecast(data2);
 
-          }).catch(err => {
-            console.error('Failed to fetch - ' + urlInner);   
-            console.log(urlOuter);
-            console.log(urlInner);
-          });
-        }).catch(err => {
-          console.error('Failed to fetch - ' + urlOuter);
-      });
-    cityEl.addEventListener("click", fetchWeatherData);
-  };
+//           }).catch(err => {
+//             console.error('Failed to fetch - ' + urlInner);   
+//             console.log(urlOuter);
+//             console.log(urlInner);
+//           });
+//         }).catch(err => {
+//           console.error('Failed to fetch - ' + urlOuter);
+//       });
+//     // cityEl.addEventListener("click", fetchWeatherData);
+//   };
 
-    function colorCode(uvi) {
-        console.log(uvi)
-      
-      if (uvi < 2) {
-        $("#UVI").children('span').addClass("favorable");
-      } else if (uvi > 5) {
-        $("#UVI").children('span').addClass("severe");
-      } else {
-        $("#UVI").children('span').addClass("moderate");
-      }
-    };
+   
