@@ -108,8 +108,9 @@ justify-content: space-between;
 }
 
 .dailyForecast {
-  background-color: purple;
+  background-color: #143346;
   flex-basis: auto;
+  width: 153px;
   height: 265px;
   margin: 7px;
 }
@@ -127,3 +128,7 @@ justify-content: space-between;
   font-style: bold;
   font-size: 18px;
 }
+
+/* #city h2 {
+  font-weight: bold;
+} */
