@@ -9,12 +9,11 @@ This application enables the user to enter a city to obtain the current weather 
 * Javascript
 
 ## Website
-You can download the source code here: https://github.com/WardVanlaar/weather-dashboard/.
-Or you can launch the application here: https://wardvanlaar.github.io/weather-dashboard/.
+You can download the source code here: https://github.com/WardVanlaar/weather-dashboard/
+Or you can launch the application here: https://wardvanlaar.github.io/weather-dashboard/
 This is what it should look like:
 
-
-
+![image](https://user-images.githubusercontent.com/91222837/148273926-e9f41555-5715-4317-8c29-c3a2ed79f8dc.png)
 
 ## Contribution
 Made by Ward Vanlaar adapting code from:
