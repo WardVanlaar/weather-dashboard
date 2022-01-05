@@ -11,8 +11,10 @@ const list = document.querySelector("#city");
 const apiKey = "9173d4a8ceb0b3884e0d4a9dd7768ed0";
 
 // capture city
-form.addEventListener("submit", e => {
+$("#submit_btn").on("click", e => {
   e.preventDefault();
+  console.log("submit button clicked")
+  console.log(e)
   let inputVal = input.value;
   cityListHandler();
 
@@ -136,11 +138,17 @@ function cityListHandler(event) {
      
       var cityEl = document.createElement("button");
       cityEl.classList = "btn btn-secondary list-item";
-      // cityEl.onclick = fetchWeatherData();
       var titleEl = document.createElement("span");
       titleEl.textContent = cities[i].name;
       cityEl.appendChild(titleEl);
       cityList.appendChild(cityEl);
+      cityEl.onclick = fetchWeatherData(cities[i].name)
+      
+      // cityEl.on("click", function() {
+      //   console.log("history button clicked")
+      //   fetchWeatherData(cities[i].name);
+      // });
+     
     } 
 }
 
@@ -155,63 +163,61 @@ if (uvi < 2) {
   }
 };
 
-// // To load city from search history
-// function fetchWeatherData(event) {
-//   console.log(event)
-//     let inputVal = event.target.innerText;
-//     const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
-//     let urlInner = '';
+// To load city from search history
+function fetchWeatherData(city) {
+    const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    let urlInner = '';
 
-//     fetch(urlOuter)
-//     .then(responseO => responseO.json())
-//     .then(data => {
-//       const { main, coord, name, sys, weather, wind, dt } = data;
-//       const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
-//         weather[0]["icon"]
-//       }.svg`;
+    fetch(urlOuter)
+    .then(responseO => responseO.json())
+    .then(data => {
+      const { main, coord, name, sys, weather, wind, dt } = data;
+      const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
+        weather[0]["icon"]
+      }.svg`;
       
-//       const unixTime = data.dt;
-//       const date = new Date(unixTime*1000);
-//       const date1= date.toLocaleDateString("en-US");
+      const unixTime = data.dt;
+      const date = new Date(unixTime*1000);
+      const date1= date.toLocaleDateString("en-US");
 
-//       const neededValue1 = data.coord.lat;
-//       const neededValue2 = data.coord.lon;
+      const neededValue1 = data.coord.lat;
+      const neededValue2 = data.coord.lon;
 
-//       urlInner = `https://api.openweathermap.org/data/2.5/onecall?lat=${neededValue1}&lon=${neededValue2}&appid=${apiKey}`;
-//       return fetch(urlInner)
-//         .then(responseI => responseI.json())
-//         .then(data2 => {
-//           const {current, daily} = data2;
+      urlInner = `https://api.openweathermap.org/data/2.5/onecall?lat=${neededValue1}&lon=${neededValue2}&appid=${apiKey}`;
+      return fetch(urlInner)
+        .then(responseI => responseI.json())
+        .then(data2 => {
+          const {current, daily} = data2;
 
-//           city.textContent = "";
+          city.textContent = "";
 
-//           const li = document.createElement("span");
-//           li.classList.add("city");
-//           const markup = `
-//             <h2 class="city-name" data-name="${name},${sys.country}">
-//               <span>${name}, ${sys.country} (${date1}) <figure> <img class="city-icon" src="${icon}" alt="${weather[0]["description"]}"></figure>
-//               </span>
-//             </h2>
-//             <div class="city-temp">Temp: ${Math.round(main.temp)}<sup>°</sup>C</div>
-//             <div class="city-wind">Wind: ${wind.speed} Km/h</div>
-//             <div class="city-humidity">Humidity: ${main.humidity}%</div>
-//             <div class="city-UVI" id="UVI"> UV index: <span>${current.uvi}</span></div>
-//           `;
+          const li = document.createElement("span");
+          li.classList.add("city");
+          const markup = `
+            <h2 class="city-name" data-name="${name},${sys.country}">
+              <span>${name}, ${sys.country} (${date1}) <figure> <img class="city-icon" src="${icon}" alt="${weather[0]["description"]}"></figure>
+              </span>
+            </h2>
+            <div class="city-temp">Temp: ${Math.round(main.temp)}<sup>°</sup>C</div>
+            <div class="city-wind">Wind: ${wind.speed} Km/h</div>
+            <div class="city-humidity">Humidity: ${main.humidity}%</div>
+            <div class="city-UVI" id="UVI"> UV index: <span>${current.uvi}</span></div>
+          `;
 
-//           li.innerHTML = markup;
-//           list.appendChild(li);
+          li.innerHTML = markup;
+          list.appendChild(li);
           
-//           colorCode(data2.current.uvi);
-//           loadForecast(data2);
+          colorCode(data2.current.uvi);
+          loadForecast(data2);
 
-//           }).catch(err => {
-//             console.error('Failed to fetch - ' + urlInner);   
-//             console.log(urlOuter);
-//             console.log(urlInner);
-//           });
-//         }).catch(err => {
-//           console.error('Failed to fetch - ' + urlOuter);
-//       });
-//   };
+          }).catch(err => {
+            console.error('Failed to fetch - ' + urlInner);   
+            console.log(urlOuter);
+            console.log(urlInner);
+          });
+        }).catch(err => {
+          console.error('Failed to fetch - ' + urlOuter);
+      });
+  };
 
    
