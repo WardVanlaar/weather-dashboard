@@ -13,8 +13,6 @@ const apiKey = "9173d4a8ceb0b3884e0d4a9dd7768ed0";
 // capture city
 $("#submit_btn").on("click", e => {
   e.preventDefault();
-  console.log("submit button clicked")
-  console.log(e)
   let inputVal = input.value;
   cityListHandler();
 
@@ -44,8 +42,6 @@ $("#submit_btn").on("click", e => {
       .then(responseI => responseI.json())
       .then(data2 => {
         const {current, daily} = data2;
-        // localStorage.setItem("uvi", JSON.stringify(data2));
-        // console.log(data2);
 
         city.textContent = "";
 
@@ -142,38 +138,34 @@ function cityListHandler(event) {
       titleEl.textContent = cities[i].name;
       cityEl.appendChild(titleEl);
       cityList.appendChild(cityEl);
-      // cityEl.onclick = fetchWeatherData()
       
-      cityEl.onclick = fetchWeatherData(cities[i].name)
-
-      // cityEl.on("click", function() {
-      //   console.log("history button clicked")
-      //   fetchWeatherData(cities[i].name);
-      // });
-     
+      cityEl.onclick = (event) => {
+        event.preventDefault();
+        fetchWeatherData(event.target.textContent)
+      }
     } 
 }
 
 function colorCode(uvi) {
-
-if (uvi < 2) {
-  $("#UVI").children('span').addClass("favorable");
-  } else if (uvi > 5) {
-  $("#UVI").children('span').addClass("severe");
-  } else {
-  $("#UVI").children('span').addClass("moderate");
+  if (uvi < 2) {
+    $("#UVI").children('span').addClass("favorable");
+    } else if (uvi > 5) {
+    $("#UVI").children('span').addClass("severe");
+    } else {
+    $("#UVI").children('span').addClass("moderate");
   }
 };
 
 // To load city from search history
 function fetchWeatherData(inputVal) {
-    // let inputVal = event.target.innerText;
+
     const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
     let urlInner = '';
 
     fetch(urlOuter)
     .then(responseO => responseO.json())
     .then(data => {
+      console.log(data)
       const { main, coord, name, sys, weather, wind, dt } = data;
       const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
         weather[0]["icon"]
