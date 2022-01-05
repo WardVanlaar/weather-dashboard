@@ -80,7 +80,6 @@ form.addEventListener("submit", e => {
 // 5-day forecast, adapted from Jacob Liberty
 // Create the Daily Forecast divs
 function loadForecast(data) {
-  console.log(data)
   // Create divs if none
   if ( $('#forecast').children().length == 0 ){
     for (let i=0; i<5; i++){
@@ -120,7 +119,6 @@ function saveCity() {
     cities.push(newList);
 
     localStorage.setItem("cities", JSON.stringify(cities));
-    console.log(cities);
 };
 
 function cityListHandler(event) {
@@ -147,7 +145,6 @@ function cityListHandler(event) {
 }
 
 function colorCode(uvi) {
-  console.log(uvi)
 
 if (uvi < 2) {
   $("#UVI").children('span').addClass("favorable");
@@ -160,6 +157,7 @@ if (uvi < 2) {
 
 // // To load city from search history
 // function fetchWeatherData(event) {
+//   console.log(event)
 //     let inputVal = event.target.innerText;
 //     const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
 //     let urlInner = '';
@@ -184,8 +182,6 @@ if (uvi < 2) {
 //         .then(responseI => responseI.json())
 //         .then(data2 => {
 //           const {current, daily} = data2;
-//           // localStorage.setItem("uvi", JSON.stringify(data2));
-//           // console.log(data2);
 
 //           city.textContent = "";
 
@@ -216,7 +212,6 @@ if (uvi < 2) {
 //         }).catch(err => {
 //           console.error('Failed to fetch - ' + urlOuter);
 //       });
-//     // cityEl.addEventListener("click", fetchWeatherData);
 //   };
 
    
