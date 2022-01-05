@@ -142,8 +142,10 @@ function cityListHandler(event) {
       titleEl.textContent = cities[i].name;
       cityEl.appendChild(titleEl);
       cityList.appendChild(cityEl);
-      cityEl.onclick = fetchWeatherData(cities[i].name)
+      // cityEl.onclick = fetchWeatherData()
       
+      cityEl.onclick = fetchWeatherData(cities[i].name)
+
       // cityEl.on("click", function() {
       //   console.log("history button clicked")
       //   fetchWeatherData(cities[i].name);
@@ -164,8 +166,9 @@ if (uvi < 2) {
 };
 
 // To load city from search history
-function fetchWeatherData(city) {
-    const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+function fetchWeatherData(inputVal) {
+    // let inputVal = event.target.innerText;
+    const urlOuter = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
     let urlInner = '';
 
     fetch(urlOuter)
